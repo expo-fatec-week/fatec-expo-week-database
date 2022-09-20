@@ -23,6 +23,12 @@ create table pessoa (
     dtcria datetime default now()
 );
 
+#Criando a tabela de Login (Para os estandes)
+create table login (
+    id_login int default 0 primary key,
+    senha varchar(10) default ''
+);
+
 #Criando a tabela de Aluno
 create table aluno (
 	ra int primary key,
