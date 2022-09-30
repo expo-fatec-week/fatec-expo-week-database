@@ -2,7 +2,7 @@ delimiter .
 # PAV = Pessoa, Aluno, Visitante
 create procedure insPAV(in nomePAV varchar(50),
                         in emailPAV varchar(70),
-                        in telefonePAV varchar(14),
+                        in telefonePAV varchar(15),
                         in raPAV int(11),
                         in cpfPAV char(11),
                         in cursoPAV varchar(50),
