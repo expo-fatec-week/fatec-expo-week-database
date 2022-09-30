@@ -13,6 +13,14 @@ create table evento (
     dtcria datetime default now()
 );
 
+#Criando a tabela de Cursos
+create table cursos (
+	id_curso int default 0 primary key,
+    descricao varchar(25) default '',
+    estatus char(01) default '',
+    dtcria datetime default now()    
+);
+
 #Criando a tabela de Pessoa
 create table pessoa (
 	id_pessoa int auto_increment primary key,
@@ -33,11 +41,12 @@ create table login (
 create table aluno (
 	ra int primary key,
     id_pessoa int default 0,
-    curso varchar(50) default '',
+    curso int default 0,
     semestre int default 0,
     estatus char(01) default '',
     dtcria datetime default now(),
-    foreign key (id_pessoa) references pessoa(id_pessoa)
+    foreign key (id_pessoa) references pessoa(id_pessoa),
+    foreign key(curso) references cursos(id_curso)
 );
 
 #Criando a tabela de Visitante
@@ -60,4 +69,7 @@ create table agenda (
     dtcria datetime default now(),
     foreign key(id_evento) references evento(id_evento),
     foreign key(id_pessoa) references pessoa(id_pessoa)
-)
+);
+
+
+

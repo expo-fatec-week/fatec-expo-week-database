@@ -5,7 +5,7 @@ create procedure insPAV(in nomePAV varchar(50),
                         in telefonePAV varchar(15),
                         in raPAV int(11),
                         in cpfPAV char(11),
-                        in cursoPAV varchar(50),
+                        in cursoPAV int,
                         in periodoPAV int(11))
 begin
   declare idPAV int;
