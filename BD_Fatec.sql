@@ -18,7 +18,7 @@ create table pessoa (
 	id_pessoa int auto_increment primary key,
     nome varchar(50) default '',
     email varchar(70) default '',
-    telefone varchar(14) default '',
+    telefone varchar(15) default '',
     estatus char(01) default '',
     dtcria datetime default now()
 );
