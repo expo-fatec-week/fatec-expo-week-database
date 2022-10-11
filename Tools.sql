@@ -1,3 +1,13 @@
+CREATE VIEW vw_visitante_info AS
+SELECT b.cpf, a.nome, a.telefone, a.email FROM pessoa a	
+	JOIN visitante b ON a.id_pessoa = b.id_pessoa;
+    
+CREATE VIEW vw_aluno_info AS
+SELECT b.ra, a.nome, c.descricao, b.semestre, a.telefone, a.email FROM pessoa a 
+	JOIN aluno b ON a.id_pessoa = b.id_pessoa
+    JOIN cursos c ON b.curso = c.id_curso;
+    
+
 delimiter .
 # PAV = Pessoa, Aluno, Visitante
 create procedure insPAV(in nomePAV varchar(50),
