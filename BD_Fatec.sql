@@ -9,6 +9,7 @@ create table evento (
 	id_evento int auto_increment primary key,
     descricao varchar(100) default '',
     tipo enum('estande','palestra') default 'estande',
+    cod_verificacao varchar(10) default '',
     estatus char(01) default '',
     dtcria datetime default now()
 );
@@ -16,7 +17,7 @@ create table evento (
 #Criando a tabela de Cursos
 create table cursos (
 	id_curso int default 0 primary key,
-    descricao varchar(25) default '',
+    descricao varchar(40) default '',
     estatus char(01) default '',
     dtcria datetime default now()    
 );
@@ -39,7 +40,7 @@ create table login (
 
 #Criando a tabela de Aluno
 create table aluno (
-	ra int primary key,
+	ra char(13) primary key,
     id_pessoa int default 0,
     curso int default 0,
     semestre int default 0,
