@@ -9,14 +9,15 @@ SELECT b.ra, a.nome, c.descricao, b.semestre, a.telefone, a.email FROM pessoa a
     
 
 delimiter .
-# PAV = Pessoa, Aluno, Visitante
+# PAV = Pessoa, Aluno, Visitante, Termo
 create procedure insPAV(in nomePAV varchar(50),
                         in emailPAV varchar(70),
                         in telefonePAV varchar(15),
                         in raPAV int(11),
                         in cpfPAV char(11),
                         in cursoPAV int,
-                        in periodoPAV int(11))
+                        in periodoPAV int(11),
+                        in aceiteTermoPAV boolean)
 begin
   declare idPAV int;
   insert into pessoa(nome, email, telefone)
@@ -30,6 +31,8 @@ begin
       insert into aluno(ra, id_pessoa, curso, semestre)
         values(raPAV, idPAV, cursoPAV, periodoPAV);
   end if;
+  insert into termo(id_pessoa)
+        values(idPAV);
 end .
 
 delimiter ;

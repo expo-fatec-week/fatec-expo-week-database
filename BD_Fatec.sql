@@ -72,5 +72,10 @@ create table agenda (
     foreign key(id_pessoa) references pessoa(id_pessoa)
 );
 
-
+#Criando a tabela de Termo
+create table termo (
+    id_pessoa int default 0,
+    dtcria datetime default now(),
+    foreign key (id_pessoa) references pessoa(id_pessoa)
+);
 
