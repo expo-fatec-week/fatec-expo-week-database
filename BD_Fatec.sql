@@ -34,9 +34,13 @@ create table pessoa (
 
 #Criando a tabela de Login (Para os estandes)
 create table login (
-    id_login int default 0 primary key,
-    senha varchar(10) default ''
+    id_login int primary key auto_increment,
+    usuario varchar(8),
+    senha varchar(10) default '',
+    id_evento int,
+    constraint id_evento foreign key (id_evento) references evento(id_evento)
 );
+ALTER TABLE evento ADD COLUMN data_evento DATETIME;
 
 #Criando a tabela de Aluno
 create table aluno (
