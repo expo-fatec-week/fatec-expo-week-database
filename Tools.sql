@@ -16,8 +16,8 @@ create procedure insPAV(in nomePAV varchar(50),
                         in raPAV int(11),
                         in cpfPAV char(11),
                         in cursoPAV int,
-                        in periodoPAV int(11),
-                        in aceiteTermoPAV boolean)
+                        in periodoPAV int(11)
+                        )
 begin
   declare idPAV int;
   insert into pessoa(nome, email, telefone)
