@@ -76,5 +76,16 @@ create table agenda (
     foreign key(id_pessoa) references pessoa(id_pessoa)
 );
 
+#Criando a tabela de Termo
+create table termo (
+    id_pessoa int default 0,
+    dtcria datetime default now(),
+    foreign key (id_pessoa) references pessoa(id_pessoa)
+);
 
-
+#Criando a coluna data_validacao e id_pessoa_verificacao (Contendo data e hora da geração do código de validação e o id de quem gerou aquele código.)
+ALTER TABLE evento ADD dt_verificacao datetime AFTER cod_verificacao;
+ALTER TABLE evento ADD id_pessoa_verificacao int AFTER dt_verificacao;
+ALTER TABLE evento ADD CONSTRAINT id_pessoa_verificacao
+FOREIGN KEY(id_pessoa_verificacao) REFERENCES pessoa (id_pessoa);
+ALTER TABLE evento ADD qtd_participantes int;
