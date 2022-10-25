@@ -14,17 +14,33 @@ SELECT a.id_evento, a.descricao, c.id_pessoa, c.nome, c.email, b.validacao from 
     
 CREATE VIEW vw_exibe_eventos AS
 	select id_evento, descricao, tipo, data_evento from evento WHERE data_evento > now() - interval 3 hour;
-    
+	
+CREATE VIEW vw_meus_eventos AS
+SELECT a.id_evento, a.descricao, a.tipo, a.data_evento, c.nome, c.id_pessoa, b.dtcria from evento a
+	JOIN agenda b ON a.id_evento = b.id_evento
+    JOIN pessoa c ON b.id_pessoa = c.id_pessoa 
+	WHERE data_evento > now() - interval 3 hour;
 
+#ESSA É A VIEW QUE NECESSITA DE REVISÃO
+CREATE VIEW vw_eventos_disponiveis AS
+SELECT a.id_evento, a.descricao, a.tipo, a.data_evento, c.nome, c.id_pessoa from evento a
+	LEFT JOIN agenda b ON a.id_evento = b.id_evento
+    LEFT JOIN pessoa c ON b.id_pessoa = c.id_pessoa
+    WHERE data_evento > now() - interval 3 hour
+    AND (dayofyear(data_evento) = dayofyear(now() - interval 3 hour))
+    AND a.id_evento not in(select b.id_evento from agenda where b.id_pessoa = 1855);
+    
+    
 delimiter .
-# PAV = Pessoa, Aluno, Visitante
+# PAV = Pessoa, Aluno, Visitante, Termo
 create procedure insPAV(in nomePAV varchar(50),
                         in emailPAV varchar(70),
                         in telefonePAV varchar(15),
                         in raPAV int(11),
                         in cpfPAV char(11),
                         in cursoPAV int,
-                        in periodoPAV int(11))
+                        in periodoPAV int(11)
+                        )
 begin
   declare idPAV int;
   insert into pessoa(nome, email, telefone)
@@ -38,6 +54,8 @@ begin
       insert into aluno(ra, id_pessoa, curso, semestre)
         values(raPAV, idPAV, cursoPAV, periodoPAV);
   end if;
+  insert into termo(id_pessoa)
+        values(idPAV);
 end .
 
 delimiter ;
