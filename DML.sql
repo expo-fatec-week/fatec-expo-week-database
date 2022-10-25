@@ -1,5 +1,5 @@
 #Selecionando o banco de dados
-use fatecweek;
+use etecdeem_fatecweek;
 
 #Criação dos cursos
 insert into cursos(id_curso, descricao) values (1 , 'AUTOMAÇÃO INDUSTRIAL'),

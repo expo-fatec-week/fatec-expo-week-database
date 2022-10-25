@@ -54,3 +54,31 @@ CREATE TRIGGER trg_login_estande
 	END $
 DELIMITER ;
 
+#PROCEDURE VERIFICAR TIMER ENTRE EVENTO E DATA HORA ATUAL
+delimiter $$
+create procedure verifica_tempo (in id_evento_consulta int)
+	begin
+        -- definição de variáveis utilizadas na procedure		
+        declare p_flag      int default 0;
+        declare p_minutos   int default 0;
+                
+		-- selecionar a data/hora da tabela
+        select round(time_to_sec(timediff(now(), dt_verificacao)) / 60, 0) into p_minutos
+		from evento
+		where id_evento = id_evento_consulta;                    
+		       
+		-- validacao do tempo
+		if p_minutos > 10 then
+			set p_flag = 0;
+		else
+			set p_flag = 1;
+        end if;
+        
+        set @flag = p_flag;
+        
+        select @flag;
+        
+	end $$
+delimiter ;
+
+

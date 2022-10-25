@@ -1,8 +1,8 @@
 #Criação do banco de dados
-create database fatecweek;
+create database etecdeem_fatecweek;
 
 #Selecionando o banco de dados
-use fatecweek;
+use etecdeem_fatecweek;
 
 #Criando a tabela de Evento
 create table evento (
