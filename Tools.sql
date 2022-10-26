@@ -13,24 +13,14 @@ SELECT a.id_evento, a.descricao, c.id_pessoa, c.nome, c.email, b.validacao from 
     JOIN pessoa c ON b.id_pessoa = c.id_pessoa;    
     
 CREATE VIEW vw_exibe_eventos AS
-	select id_evento, descricao, tipo, data_evento from evento WHERE data_evento > now() - interval 3 hour;
+	select id_evento, descricao, tipo, data_evento from evento WHERE data_evento > now();
 	
 CREATE VIEW vw_meus_eventos AS
 SELECT a.id_evento, a.descricao, a.tipo, a.data_evento, c.nome, c.id_pessoa, b.dtcria from evento a
 	JOIN agenda b ON a.id_evento = b.id_evento
     JOIN pessoa c ON b.id_pessoa = c.id_pessoa 
-	WHERE data_evento > now() - interval 3 hour;
+	WHERE data_evento > now();
 
-#ESSA É A VIEW QUE NECESSITA DE REVISÃO
-CREATE VIEW vw_eventos_disponiveis AS
-SELECT a.id_evento, a.descricao, a.tipo, a.data_evento, c.nome, c.id_pessoa from evento a
-	LEFT JOIN agenda b ON a.id_evento = b.id_evento
-    LEFT JOIN pessoa c ON b.id_pessoa = c.id_pessoa
-    WHERE data_evento > now() - interval 3 hour
-    AND (dayofyear(data_evento) = dayofyear(now() - interval 3 hour))
-    AND a.id_evento not in(select b.id_evento from agenda where b.id_pessoa = 1855);
-    
-    
 delimiter .
 # PAV = Pessoa, Aluno, Visitante, Termo
 create procedure insPAV(in nomePAV varchar(50),
