@@ -1,25 +1,33 @@
 CREATE VIEW vw_visitante_info AS
-SELECT a.id_pessoa, b.cpf, a.nome, a.telefone, a.email FROM pessoa a	
-	JOIN visitante b ON a.id_pessoa = b.id_pessoa;
+SELECT a.id_pessoa, b.cpf, a.nome, a.telefone, a.email
+FROM pessoa a	
+JOIN visitante b ON a.id_pessoa = b.id_pessoa;
     
 CREATE VIEW vw_aluno_info AS
-SELECT a.id_pessoa, b.ra, a.nome, c.descricao, b.semestre, a.telefone, a.email FROM pessoa a 
-	JOIN aluno b ON a.id_pessoa = b.id_pessoa
-    JOIN cursos c ON b.curso = c.id_curso;
-    
-CREATE VIEW vw_valida_estande AS
-SELECT a.id_evento, a.descricao, c.id_pessoa, c.nome, c.email, b.validacao from evento a
-	JOIN agenda b ON a.id_evento = b.id_evento
-    JOIN pessoa c ON b.id_pessoa = c.id_pessoa;    
+SELECT a.id_pessoa, b.ra, a.nome, c.descricao, b.semestre, a.telefone, a.email, b.tipo 
+FROM pessoa a 
+JOIN aluno b ON a.id_pessoa = b.id_pessoa
+JOIN cursos c ON b.curso = c.id_curso;   
     
 CREATE VIEW vw_exibe_eventos AS
-	select id_evento, descricao, tipo, data_evento from evento WHERE data_evento > now();
+SELECT id_evento, descricao, tipo, data_evento 
+FROM evento 
+WHERE data_evento > now();
 	
 CREATE VIEW vw_meus_eventos AS
-SELECT a.id_evento, a.descricao, a.tipo, a.data_evento, c.nome, c.id_pessoa, b.dtcria from evento a
-	JOIN agenda b ON a.id_evento = b.id_evento
-    JOIN pessoa c ON b.id_pessoa = c.id_pessoa 
-	WHERE data_evento > now();
+SELECT a.id_evento, a.descricao, a.tipo, a.data_evento, c.id_pessoa, b.data_validacao 
+FROM evento a
+JOIN participacoes b ON a.id_evento = b.id_evento
+JOIN pessoa c ON b.id_pessoa_participante = c.id_pessoa 
+WHERE b.data_validacao IS NOT NULL;
+
+CREATE VIEW vw_time_difference_last_event AS
+SELECT TIMESTAMPDIFF (
+MINUTE, 
+(SELECT data_validacao FROM etecdeem_fatecweek.participacoes ORDER BY data_validacao LIMIT 1)
++ INTERVAL TIMESTAMPDIFF(HOUR,  (SELECT data_validacao FROM etecdeem_fatecweek.participacoes ORDER BY data_validacao LIMIT 1), (SELECT current_timestamp())) HOUR, 
+(SELECT current_timestamp())) AS minutos
+FROM participacoes;
 
 delimiter .
 # PAV = Pessoa, Aluno, Visitante, Termo
@@ -50,18 +58,6 @@ end .
 
 delimiter ;
 
-
-DELIMITER $
-CREATE TRIGGER trg_login_estande 
-	AFTER INSERT ON evento FOR EACH ROW
-	BEGIN
-		IF NEW.tipo = 'estande' THEN
-			INSERT INTO login(usuario, senha, id_evento)
-			VALUES(SUBSTRING(uuid(), 1, 8), REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(SUBSTRING(uuid(), 1, 10), "-", "@"), "0", "!"), "3", "#"), "b", "*"), "c", "#"), "k", "T"), "9", "S"), "f", "x"), "-", "@"), "0", "!"), "-", "@"), "3", "#"), NEW.id_evento);
-		END IF;
-	END $
-DELIMITER ;
-
 #PROCEDURE VERIFICAR TIMER ENTRE EVENTO E DATA HORA ATUAL
 delimiter $$
 create procedure verifica_tempo (in id_evento_consulta int)
@@ -88,5 +84,3 @@ create procedure verifica_tempo (in id_evento_consulta int)
         
 	end $$
 delimiter ;
-
-
