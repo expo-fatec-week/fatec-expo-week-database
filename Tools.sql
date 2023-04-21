@@ -4,7 +4,7 @@ FROM pessoa a
 JOIN visitante b ON a.id_pessoa = b.id_pessoa;
     
 CREATE VIEW vw_aluno_info AS
-SELECT a.id_pessoa, b.ra, a.nome, c.descricao, b.semestre, a.telefone, a.email, b.tipo 
+SELECT a.id_pessoa, b.ra, a.nome, c.descricao, b.semestre, a.telefone, a.email, b.tipo, b.responsavel_evento
 FROM pessoa a 
 JOIN aluno b ON a.id_pessoa = b.id_pessoa
 JOIN cursos c ON b.curso = c.id_curso;   
@@ -20,14 +20,6 @@ FROM evento a
 JOIN participacoes b ON a.id_evento = b.id_evento
 JOIN pessoa c ON b.id_pessoa_participante = c.id_pessoa 
 WHERE b.data_validacao IS NOT NULL;
-
-CREATE VIEW vw_time_difference_last_event AS
-SELECT TIMESTAMPDIFF (
-MINUTE, 
-(SELECT data_validacao FROM etecdeem_fatecweek.participacoes ORDER BY data_validacao LIMIT 1)
-+ INTERVAL TIMESTAMPDIFF(HOUR,  (SELECT data_validacao FROM etecdeem_fatecweek.participacoes ORDER BY data_validacao LIMIT 1), (SELECT current_timestamp())) HOUR, 
-(SELECT current_timestamp())) AS minutos
-FROM participacoes;
 
 delimiter .
 # PAV = Pessoa, Aluno, Visitante, Termo
