@@ -25,6 +25,7 @@ create table evento (
 	id_evento int auto_increment primary key,
     descricao varchar(150) default '',
     tipo enum('ESTANDE','PALESTRA') default 'ESTANDE',
+    local varchar(30) default '',
     data_evento datetime,
     cod_verificacao varchar(10) default '',
     dt_verificacao datetime default now(),
@@ -72,4 +73,13 @@ create table termo (
     id_pessoa int default 0,
     dtcria datetime default now(),
     foreign key (id_pessoa) references pessoa(id_pessoa)
+);
+
+#Criando tabela de Administrador
+create table administradores (
+	id int auto_increment primary key,
+    nome varchar(130) default '',
+    email varchar(70) NOT NULL UNIQUE,
+    senha varchar(255),
+    dtcria datetime default now()
 );

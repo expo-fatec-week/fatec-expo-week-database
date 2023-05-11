@@ -1,6 +1,10 @@
 #Selecionando o banco de dados
 use etecdeem_fatecweek;
 
+#Criacao dos acessos dos administradores
+INSERT INTO administradores(nome, email, senha) VALUES("Fabio Brussolo", "fabio.brussolo@fatec.sp.gov.br", "$2a$10$O4W6A4Afli5qcabaSO6rxuvv4Ekd7h6YjrgrSaPYmtorpMoGGx2Z2"); --Senha: 123456
+INSERT INTO administradores(nome, email, senha) VALUES("Stephanie Marques Fernandes", "stephanie.fernandes@fatec.sp.gov.br", "$2a$10$O4W6A4Afli5qcabaSO6rxuvv4Ekd7h6YjrgrSaPYmtorpMoGGx2Z2"); --Senha: 123456
+
 #Criação dos cursos
 insert into cursos(id_curso, descricao) values (1 , 'AUTOMAÇÃO INDUSTRIAL'),
                                                (2 , 'DESENVOLVIMENTO SOFTWARE MULTIPLATAFORMA'),
