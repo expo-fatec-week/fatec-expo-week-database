@@ -21,6 +21,12 @@ JOIN participacoes b ON a.id_evento = b.id_evento
 JOIN pessoa c ON b.id_pessoa_participante = c.id_pessoa 
 WHERE b.data_validacao IS NOT NULL;
 
+CREATE VIEW vw_aluno_eventos_por_curso AS
+SELECT DISTINCT a.ra, a.id_pessoa, p.nome, a.curso, p.qtd_eventos_participados FROM aluno a
+JOIN pessoa p ON a.id_pessoa = p.id_pessoa
+JOIN participacoes pa ON a.id_pessoa = pa.id_pessoa_participante
+JOIN evento e ON pa.id_evento = e.id_evento;
+
 delimiter .
 # PAV = Pessoa, Aluno, Visitante, Termo
 create procedure insPAV(in nomePAV varchar(50),
@@ -76,3 +82,25 @@ create procedure verifica_tempo (in id_evento_consulta int)
         
 	end $$
 delimiter ;
+
+-- Adiciona o aluno na tabela de participacoes e incrementa a quantidade de eventos participados.
+-- Para executar: CALL p_add_presenca_aluno("id_evento", "id_pessoa_participante", "id_pessoa_validacao");
+DELIMITER $$
+CREATE PROCEDURE p_add_presenca_aluno 
+(id_evento INT, id_pessoa_participante INT, id_pessoa_validacao INT)
+BEGIN
+
+	INSERT INTO participacoes (id_evento, id_pessoa_participante, id_pessoa_validacao, data_validacao) 
+	VALUES (
+    id_evento, 
+    id_pessoa_participante, 
+    id_pessoa_validacao, 
+    now()
+  );
+    
+	UPDATE pessoa SET 
+  qtd_eventos_participados = qtd_eventos_participados + 1 
+  WHERE id_pessoa = id_pessoa_participante;
+
+END $$
+DELIMITER ;

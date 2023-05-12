@@ -10,6 +10,7 @@ create table pessoa (
     nome varchar(130) default '',
     email varchar(70) default '',
     telefone varchar(15) default '',
+    qtd_eventos_participados int default 0,
     dtcria datetime default now()
 );
 
