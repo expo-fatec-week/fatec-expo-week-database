@@ -10,7 +10,7 @@ JOIN aluno b ON a.id_pessoa = b.id_pessoa
 JOIN cursos c ON b.curso = c.id_curso;   
     
 CREATE VIEW vw_exibe_eventos AS
-SELECT id_evento, descricao, tipo, data_evento 
+SELECT id_evento, descricao, local, tipo, data_evento 
 FROM evento 
 WHERE data_evento > now();
 	
