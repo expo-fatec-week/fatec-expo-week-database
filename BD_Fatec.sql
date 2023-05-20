@@ -29,7 +29,7 @@ create table evento (
     local varchar(30) default '',
     data_evento datetime,
     cod_verificacao varchar(10) default '',
-    dt_verificacao datetime default now(),
+    dt_verificacao datetime,
     id_pessoa_verificacao int,
     dtcria datetime default now(),
     qtd_participantes int,
