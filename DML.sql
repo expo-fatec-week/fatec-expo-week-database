@@ -3748,3 +3748,10 @@ insert into aluno(ra, id_pessoa, curso, semestre) values ("2160612221030", (sele
 insert into aluno(ra, id_pessoa, curso, semestre) values ("2160612021014", (select id_pessoa from pessoa where email = "viviane.machado01@fatec.sp.gov.br"), 7,5);
 insert into aluno(ra, id_pessoa, curso, semestre) values ("2160612221001", (select id_pessoa from pessoa where email = "waleria.mariano@fatec.sp.gov.br"), 7,1);
 insert into aluno(ra, id_pessoa, curso, semestre) values ("2160612221037", (select id_pessoa from pessoa where email = "yasmin.braz@fatec.sp.gov.br"), 7,1);
+
+
+-- Atualizando alunos organizadores:
+
+UPDATE etecdeem_fatecweek.aluno
+SET tipo = "ORGANIZADOR"
+WHERE ra IN ("2160612021038", "2160692213013", "2160292223035", "2160292213009", "2160762223011", "2160902121021", "2160762122021", "2160612221032", "2160762122027", "2160612111044", "2160612111023", "2160292313001", "2160292222006", "2160692113024", "2160292222022");

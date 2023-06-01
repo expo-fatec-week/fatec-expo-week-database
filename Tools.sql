@@ -7,7 +7,7 @@ CREATE VIEW vw_aluno_info AS
 SELECT a.id_pessoa, b.ra, a.nome, c.descricao, b.semestre, a.telefone, a.email, b.tipo, b.responsavel_evento
 FROM pessoa a 
 JOIN aluno b ON a.id_pessoa = b.id_pessoa
-JOIN cursos c ON b.curso = c.id_curso;   
+JOIN cursos c ON b.curso = c.id_curso;
     
 CREATE VIEW vw_exibe_eventos AS
 SELECT id_evento, descricao, local, tipo, data_evento 
@@ -15,17 +15,46 @@ FROM evento
 WHERE data_evento > now();
 	
 CREATE VIEW vw_meus_eventos AS
-SELECT a.id_evento, a.descricao, a.tipo, a.data_evento, c.id_pessoa, b.data_validacao 
+SELECT DISTINCT a.id_evento, a.descricao, a.tipo, a.data_evento, c.id_pessoa, b.data_validacao 
 FROM evento a
 JOIN participacoes b ON a.id_evento = b.id_evento
 JOIN pessoa c ON b.id_pessoa_participante = c.id_pessoa 
 WHERE b.data_validacao IS NOT NULL;
 
-CREATE VIEW vw_aluno_eventos_por_curso AS
-SELECT DISTINCT a.ra, a.id_pessoa, p.nome, a.curso, p.qtd_eventos_participados FROM aluno a
+-- WHERE curso = ?
+CREATE VIEW vw_detalhes_participacoes_por_curso AS
+SELECT DISTINCT a.ra, a.id_pessoa, p.nome, a.curso
+FROM aluno a
 JOIN pessoa p ON a.id_pessoa = p.id_pessoa
 JOIN participacoes pa ON a.id_pessoa = pa.id_pessoa_participante
 JOIN evento e ON pa.id_evento = e.id_evento;
+
+-- WHERE id_pessoa_participante = ?;
+CREATE VIEW vw_detalhes_participacoes_por_pessoa AS
+SELECT DISTINCT e.id_evento, e.descricao, e.tipo, e.local, e.data_evento, e.dt_verificacao 
+FROM evento e
+JOIN participacoes p ON e.id_evento = p.id_evento
+
+-- WHERE b.id_pessoa_participante IN (?);
+CREATE VIEW vw_detalhes_participacoes_por_lista_alunos AS
+SELECT DISTINCT a.ra, p.nome, p.email, e.descricao, e.tipo, e.data_evento
+FROM evento e
+JOIN participacoes b ON e.id_evento = b.id_evento
+JOIN pessoa p ON b.id_pessoa_participante = p.id_pessoa
+JOIN aluno a ON a.id_pessoa = p.id_pessoa
+
+CREATE VIEW vw_aluno_eventos_por_curso AS
+SELECT DISTINCT a.ra, a.id_pessoa, p.nome, a.curso, e.id_evento
+FROM aluno a
+JOIN pessoa p ON a.id_pessoa = p.id_pessoa
+JOIN participacoes pa ON a.id_pessoa = pa.id_pessoa_participante
+JOIN evento e ON pa.id_evento = e.id_evento;
+
+-- CREATE VIEW vw_aluno_eventos_por_curso AS
+-- SELECT DISTINCT a.ra, a.id_pessoa, p.nome, a.curso, p.qtd_eventos_participados FROM aluno a
+-- JOIN pessoa p ON a.id_pessoa = p.id_pessoa
+-- JOIN participacoes pa ON a.id_pessoa = pa.id_pessoa_participante
+-- JOIN evento e ON pa.id_evento = e.id_evento;
 
 delimiter .
 # PAV = Pessoa, Aluno, Visitante, Termo
